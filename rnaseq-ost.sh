@@ -45,3 +45,23 @@ plotPCA -in macierz.npz -l l.a5.18 l.a5.02 l.a5.10 l.s0.18 l.s0.02 l.s0.10 l.s8.
 # Klastrowanie
 plotCorrelation --corData macierz.npz -c pearson -p heatmap -o pear.svg
 # można dodać --removeOutliers ale zwykle to nie pomaga
+
+# Downsampling próby N
+# Wydobycie liczby counts z reads forward (bo reverse mają tyle samo). Ręcznie z raportów html fastqc.
+# Zapis do 2023_04_20.readnum i dodanie w calc ID literowego
+# Wyliczenie śr liczby odczytów bez N
+
+# Downsampling w seqtk
+# instalacja dependencies
+sudo apt install make
+sudo apt install gcc
+sudo apt install zlib1g
+sudo apt install zlib1g-dev
+# instalacja seqtk, w bin
+git clone https://github.com/lh3/seqtk.git
+cd seqtk
+make
+
+# downsampling
+
+
