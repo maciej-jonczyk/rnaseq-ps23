@@ -51,6 +51,7 @@ plotCorrelation --corData macierz.npz -c pearson -p heatmap -o pear.svg
 # Zapis do 2023_04_20.readnum i dodanie w calc ID literowego
 # Wyliczenie śr liczby odczytów bez N
 
+# ***********IE, za dużo RAMu wymaga, nawet na superkomp ******************
 # Downsampling w seqtk
 # instalacja dependencies
 sudo apt install make
@@ -61,7 +62,15 @@ sudo apt install zlib1g-dev
 git clone https://github.com/lh3/seqtk.git
 cd seqtk
 make
+#****************************************************************************8
 
-# downsampling
+# downsampling ze skryptami z BBmap
+# pobranie binaries z sourceforge i rozpakowanie
+# Uwaga, inne ćscieżki bo robiłem na Dell
+# reformat.sh marudzi co do plików PE więc najpierw re-parowanie
+~/bin/bbmap/repair.sh in=../2023_04_20.trim/N_1P.fastq.gz in2=../2023_04_20.trim/N_2P.fastq.gz out=N_1P.rep.fastq.gz out2=N_2P.rep.fastq.gz
+# kontrolne fastqc
+~/bin/FastQC/fastqc *.fastq.gz --outdir=.
+
 
 
