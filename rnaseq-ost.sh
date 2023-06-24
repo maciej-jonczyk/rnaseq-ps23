@@ -49,7 +49,7 @@ plotCorrelation --corData macierz.npz -c pearson -p heatmap -o pear.svg
 # Downsampling próby N
 # Wydobycie liczby counts z reads forward (bo reverse mają tyle samo). Ręcznie z raportów html fastqc.
 # Zapis do 2023_04_20.readnum i dodanie w calc ID literowego
-# Wyliczenie śr liczby odczytów bez N
+# Wyliczenie śr liczby odczytów bez próby N
 
 # ***********IE, za dużo RAMu wymaga, nawet na superkomp ******************
 # Downsampling w seqtk
@@ -66,11 +66,41 @@ make
 
 # downsampling ze skryptami z BBmap
 # pobranie binaries z sourceforge i rozpakowanie
-# Uwaga, inne ćscieżki bo robiłem na Dell
+# Uwaga, inne ścieżki bo robiłem na Dell
 # reformat.sh marudzi co do plików PE więc najpierw re-parowanie
 ~/bin/bbmap/repair.sh in=../2023_04_20.trim/N_1P.fastq.gz in2=../2023_04_20.trim/N_2P.fastq.gz out=N_1P.rep.fastq.gz out2=N_2P.rep.fastq.gz
+Input:                          170098586 reads                 22036125152 bases.
+Result:                         170098586 reads (100.00%)       22036125152 bases (100.00%)
+Pairs:                          170098586 reads (100.00%)       22036125152 bases (100.00%)
+Singletons:                     0 reads (0.00%)         0 bases (0.00%)
+
+Time:                           581.135 seconds.
+Reads Processed:        170m    292.70k reads/sec
+Bases Processed:      22036m    37.92m bases/sec
 # kontrolne fastqc
 ~/bin/FastQC/fastqc *.fastq.gz --outdir=.
+# downsampling
+~/bin/bbmap/reformat.sh in=N_1P.rep.fastq.gz in2=N_2P.rep.fastq.gz out=N_1P.dwn.fastq.gz out2=N_2P.dwn.fastq.gz samplereadstarget=45780325 sampleseed=1 overwrite=t
+Set INTERLEAVED to false
+Input is being processed as paired
+Input:                          170098586 reads                 22036125152 bases
+Output:                         91560650 reads (53.83%)         11861138140 bases (53.83%)
+                                                                                                                                                                                             
+Time:                           395.597 seconds.                                                                                                                                             
+Reads Processed:        170m    429.98k reads/sec                                                                                                                                            
+Bases Processed:      22036m    55.70m bases/sec 
+# i znów fastqc ale tylko dla downsampled
+~/bin/FastQC/fastqc *dwn.fastq.gz --outdir=.
+# mapowanie
+~/bin/STAR_2.7.10b/Linux_x86_64/STAR --runThreadN 8 --readFilesIn N_1P.dwn.fastq.gz N_2P.dwn.fastq.gz --genomeDir /media/mj/SAMSUNG/z-toshiba/star-index/ --outSAMtype BAM SortedByCoordinate --outFileNamePrefix Ndwn --readFilesCommand zcat
+# filtrowanie jakości, sortowanie, indeksowanie
+samtools view -@8 -bq10 NdwnAligned.sortedByCoord.out.bam -o Ndwnq10.bam && samtools sort -@8 -o Ndwnq10srt.bam Ndwnq10.bam && samtools index -@8 Ndwnq10srt.bam && rm Ndwnq10.bam
+# analiza jkościowa bam
+~/bin/BamQC/bin/bamqc Ndwnq10srt.bam --threads 8 -f /media/mj/SAMSUNG/z-toshiba/NAMv5/Zea_mays.Zm-B73-REFERENCE-NAM-5.0.55.chr.gtf -o .
+# porównanie jakości, po przeniesieniu plików fastqc dla N do pozostałych
+multiqc . -o ../multiqcn/
 
-
+# Macierz do PCA
+# poziom /media/mj/Seagate Backup Plus Drive/anal-sekw-ps23/2023_04_20.map/q10-srt-idx
+multiBamSummary bins --bamfiles Aq10srt.bam Bq10srt.bam Cq10srt.bam Dq10srt.bam Eq10srt.bam Fq10srt.bam Gq10srt.bam Hq10srt.bam Iq10srt.bam Jq10srt.bam Kq10srt.bam Lq10srt.bam Mq10srt.bam ../../Ndwn/Ndwnq10srt.bam Oq10srt.bam Pq10srt.bam Rq10srt.bam Sq10srt.bam Tq10srt.bam Uq10srt.bam Wq10srt.bam Xq10srt.bam Yq10srt.bam Zq10srt.bam --labels l.a5.18 l.a5.02 l.a5.10 l.s0.18 l.s0.02 l.s0.10 l.s8.18 l.s8.02 l.s8.10 l.s3.18 l.s3.02 l.s3.10 s.a5.18 s.a5.02 s.a5.10 s.s0.18 s.s0.02 s.s0.10 s.s8.18 s.s8.02 s.s8.10 s.s3.18 s.s3.02 s.s3.10 -p 8 -o ../../2023_04_20.pcan/macierz.npz
 
