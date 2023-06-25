@@ -103,4 +103,8 @@ multiqc . -o ../multiqcn/
 # Macierz do PCA
 # poziom /media/mj/Seagate Backup Plus Drive/anal-sekw-ps23/2023_04_20.map/q10-srt-idx
 multiBamSummary bins --bamfiles Aq10srt.bam Bq10srt.bam Cq10srt.bam Dq10srt.bam Eq10srt.bam Fq10srt.bam Gq10srt.bam Hq10srt.bam Iq10srt.bam Jq10srt.bam Kq10srt.bam Lq10srt.bam Mq10srt.bam ../../Ndwn/Ndwnq10srt.bam Oq10srt.bam Pq10srt.bam Rq10srt.bam Sq10srt.bam Tq10srt.bam Uq10srt.bam Wq10srt.bam Xq10srt.bam Yq10srt.bam Zq10srt.bam --labels l.a5.18 l.a5.02 l.a5.10 l.s0.18 l.s0.02 l.s0.10 l.s8.18 l.s8.02 l.s8.10 l.s3.18 l.s3.02 l.s3.10 s.a5.18 s.a5.02 s.a5.10 s.s0.18 s.s0.02 s.s0.10 s.s8.18 s.s8.02 s.s8.10 s.s3.18 s.s3.02 s.s3.10 -p 8 -o ../../2023_04_20.pcan/macierz.npz
-
+# PCA, kolory z https://htmlcolors.com/
+plotPCA -in macierz.npz -l l.a5.18 l.a5.02 l.a5.10 l.s0.18 l.s0.02 l.s0.10 l.s8.18 l.s8.02 l.s8.10 l.s3.18 l.s3.02 l.s3.10 s.a5.18 s.a5.02 s.a5.10 s.s0.18 s.s0.02 s.s0.10 s.s8.18 s.s8.02 s.s8.10 s.s3.18 s.s3.02 s.s3.10 --colors '#f06292' '#f06292' '#f06292' '#4dd0e1' '#4dd0e1' '#4dd0e1' '#aed581' '#aed581' '#aed581' '#ffe082' '#ffe082' '#ffe082' '#c2185b' '#c2185b' '#c2185b' '#0097a7' '#0097a7' '#0097a7' '#689f38' '#689f38' '#689f38' '#ffa000' '#ffa000' '#ffa000'  --markers 'v' 'o' 'x' --transpose -o prb-pca-n.svg
+# korelacja Pearsona
+plotCorrelation --corData macierz.npz -c pearson -p heatmap -o pear.svg
+# Zdecydowanie rozdziela zbiór tkanka, pozostałe czynniki (linia, czas) wyjaśniają już tylko 3% zmienności
