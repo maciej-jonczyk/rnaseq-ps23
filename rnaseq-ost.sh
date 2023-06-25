@@ -49,7 +49,16 @@ plotCorrelation --corData macierz.npz -c pearson -p heatmap -o pear.svg
 
 # zliczenie fragmentów
 ~/bin/subread-2.0.6-Linux-x86_64/bin/featureCounts -C  -B  -Q 10  -F GTF  -s 2  -T 4  --ignoreDup  -p  --countReadPairs  -t exon  -g gene_id  -a ~/NAMv5/Zea_mays.Zm-B73-REFERENCE-NAM-5.0.55.chr.gtf -o counts-230420.txt  /media/mj/a59e16f5-75c1-41cb-98e5-c1db006c8e7c/2023_04_20.map/q10-srt-idx/*.bam  --verbose
+# Statystyki zliczeń, poziom /media/mj/Seagate Backup Plus Drive/anal-sekw-ps23/2023_04_20.counts
+# Rozdzielenie reverse stranded (2, to jest OK) i stranded (1)
+mkdir xcounts2 xcounts1
+mv *str1* xcounts1
+mv *txt* xcounts2
+# Iw każdym z katalogów
+multiqc .
 
+###################################################################################################################################################
+###################################################################################################################################################
 # Downsampling próby N
 # Wydobycie liczby counts z reads forward (bo reverse mają tyle samo). Ręcznie z raportów html fastqc.
 # Zapis do 2023_04_20.readnum i dodanie w calc ID literowego
@@ -114,3 +123,8 @@ plotCorrelation --corData macierz.npz -c pearson -p heatmap -o pear.svg
 # Zdecydowanie rozdziela zbiór tkanka, pozostałe czynniki (linia, czas) wyjaśniają już tylko 3% zmienności
 # zliczenie fragmentów, poziom /media/mj/Seagate Backup Plus Drive/anal-sekw-ps23/2023_04_20.map/q10-srt-idx
 ~/bin/subread-2.0.6-Linux-x86_64/bin/featureCounts -C  -B  -Q 10  -F GTF  -s 2  -T 8  --ignoreDup  -p  --countReadPairs  -t exon  -g gene_id  -a /media/mj/Seagate\ Backup\ Plus\ Drive/NAMv5/Zea_mays.Zm-B73-REFERENCE-NAM-5.0.55.chr.gtf -o ../../Ndwn/counts-230420n.txt  Aq10srt.bam Bq10srt.bam Cq10srt.bam Dq10srt.bam Eq10srt.bam Fq10srt.bam Gq10srt.bam Hq10srt.bam Iq10srt.bam Jq10srt.bam Kq10srt.bam Lq10srt.bam Mq10srt.bam ../../Ndwn/Ndwnq10srt.bam Oq10srt.bam Pq10srt.bam Rq10srt.bam Sq10srt.bam Tq10srt.bam Uq10srt.bam Wq10srt.bam Xq10srt.bam Yq10srt.bam Zq10srt.bam --verbose
+# Statystyki zliczeń, poziom /media/mj/Seagate Backup Plus Drive/anal-sekw-ps23/Ndwn
+mkdir xcounts4multiqc # muszę przenieść plik z summary, żeby tylko jego używał
+cp -a counts-230420n.txt.summary xcounts4multiqc/
+cd ./xcounts4multiqc/
+multiqc .
