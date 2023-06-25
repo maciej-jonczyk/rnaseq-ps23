@@ -1,7 +1,7 @@
 # plik po featureCounts
 tail -n +2 counts-230420.txt > x
 head -n1 x | tr '\t' '\n' | cat -n
-head -n1 x | tr '\t' '\n' > x2
+cut --complement -f2-6 -d"     " x > x2
 
 
 # plik z identyfikacją prób
@@ -14,6 +14,7 @@ libreoffice --calc x
 tr '\t' '.' < x.csv > x3
 # dodanie nazwy kolumny z id i transpozycja
 cat <(echo Geneid) x3 | tr '\n' '\t' > x4
+# ręczne usunięcie TABa z końca i przejście do nowego wiersza
 # usunięcie oryginalnego nagłówka
 tail -n +2 x2 > x5
 # dodanie nowego nagłówka
