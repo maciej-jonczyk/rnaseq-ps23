@@ -1,4 +1,5 @@
 # CeNT daje wyniki z fastqc
+# Uwaga, ścieżki i liczba procesorów/RAM mogą się różnić - robiłem na różnych komputerach!
 # Trymowanie i fastqc robione na dell!
 # Trymowanie - zwykle zostaje ,,universal adapter''. Też poli-A i poli-T ale tego nie wyrzucam.
 # z poziomu 2023_04_20.trim
@@ -45,6 +46,9 @@ plotPCA -in macierz.npz -l l.a5.18 l.a5.02 l.a5.10 l.s0.18 l.s0.02 l.s0.10 l.s8.
 # Klastrowanie
 plotCorrelation --corData macierz.npz -c pearson -p heatmap -o pear.svg
 # można dodać --removeOutliers ale zwykle to nie pomaga
+
+# zliczenie fragmentów
+~/bin/subread-2.0.6-Linux-x86_64/bin/featureCounts -C  -B  -Q 10  -F GTF  -s 2  -T 4  --ignoreDup  -p  --countReadPairs  -t exon  -g gene_id  -a ~/NAMv5/Zea_mays.Zm-B73-REFERENCE-NAM-5.0.55.chr.gtf -o counts-230420.txt  /media/mj/a59e16f5-75c1-41cb-98e5-c1db006c8e7c/2023_04_20.map/q10-srt-idx/*.bam  --verbose
 
 # Downsampling próby N
 # Wydobycie liczby counts z reads forward (bo reverse mają tyle samo). Ręcznie z raportów html fastqc.
@@ -108,3 +112,5 @@ plotPCA -in macierz.npz -l l.a5.18 l.a5.02 l.a5.10 l.s0.18 l.s0.02 l.s0.10 l.s8.
 # korelacja Pearsona
 plotCorrelation --corData macierz.npz -c pearson -p heatmap -o pear.svg
 # Zdecydowanie rozdziela zbiór tkanka, pozostałe czynniki (linia, czas) wyjaśniają już tylko 3% zmienności
+# zliczenie fragmentów, poziom /media/mj/Seagate Backup Plus Drive/anal-sekw-ps23/2023_04_20.map/q10-srt-idx
+~/bin/subread-2.0.6-Linux-x86_64/bin/featureCounts -C  -B  -Q 10  -F GTF  -s 2  -T 8  --ignoreDup  -p  --countReadPairs  -t exon  -g gene_id  -a /media/mj/Seagate\ Backup\ Plus\ Drive/NAMv5/Zea_mays.Zm-B73-REFERENCE-NAM-5.0.55.chr.gtf -o ../../Ndwn/counts-230420n.txt  Aq10srt.bam Bq10srt.bam Cq10srt.bam Dq10srt.bam Eq10srt.bam Fq10srt.bam Gq10srt.bam Hq10srt.bam Iq10srt.bam Jq10srt.bam Kq10srt.bam Lq10srt.bam Mq10srt.bam ../../Ndwn/Ndwnq10srt.bam Oq10srt.bam Pq10srt.bam Rq10srt.bam Sq10srt.bam Tq10srt.bam Uq10srt.bam Wq10srt.bam Xq10srt.bam Yq10srt.bam Zq10srt.bam --verbose
