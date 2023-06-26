@@ -302,6 +302,10 @@ __ambiguous     35403 # ok 1,8 %
 # sudo apt-get install libcurl4-openssl-dev
 # sudo apt install libxml2-dev
 
+# >>>>>>>> Nowa wersja tu
+# https://cran.r-project.org/src/base/R-4/
+# tak trzeba w Trisquel insatalować, poprzedni sposób dał prawie najnowszą wersję dla Ubuntu, OK
+
 # Naprawienie dostępu do bibliotek pakietów R
 # https://stackoverflow.com/a/49366252/1040763
 
