@@ -1,7 +1,6 @@
 # Artykuły
 # https://www.mdpi.com/2073-4425/12/3/352#
 # https://www.sciencedirect.com/science/article/pii/S2001037015000392#bb0265
-# https://eds.p.ebscohost.com/eds/pdfviewer/pdfviewer?vid=1&sid=9e9173d9-839d-47a9-b1ed-89a48b22d048%40redis
 
 # Tutoriale
 https://ucdavis-bioinformatics-training.github.io/2019-March-Bioinformatics-Prerequisites/thursday/linear_models.html
