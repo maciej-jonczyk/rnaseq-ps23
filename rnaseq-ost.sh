@@ -3,7 +3,7 @@
 # Trymowanie i fastqc robione na dell!
 # Trymowanie - zwykle zostaje ,,universal adapter''. Też poli-A i poli-T ale tego nie wyrzucam.
 # z poziomu 2023_04_20.trim
-for i in A B C D E F G H I J K L M N O P R S T U W X Y Z; do /home/nev/bin/Trimmomatic-0.39/trimmomatic-0.39.jar PE -threads 8 ../2023_04_20/raw_data/${i}_R1_001.fastq.gz ../2023_04_20/raw_data/${i}_R2_001.fastq.gz -baseout ${i}.fastq.gz ILLUMINACLIP:/home/nev/bin/Trimmomatic-0.39/adapters/TruSeq3-PE-2.fa:2:30:10:2:true MINLEN:40; done
+for i in A B C D E F G H I J K L M N O P R S T U W X Y Z; do java -jar /home/nev/bin/Trimmomatic-0.39/trimmomatic-0.39.jar PE -threads 8 ../2023_04_20/raw_data/${i}_R1_001.fastq.gz ../2023_04_20/raw_data/${i}_R2_001.fastq.gz -baseout ${i}.fastq.gz ILLUMINACLIP:/home/nev/bin/Trimmomatic-0.39/adapters/TruSeq3-PE-2.fa:2:30:10:2:true MINLEN:40; done
 # fastq dla wytrymowanych. Nie ma hyperthreadingu więc podział na tyle procedur ile jest procesorów.
 for i in A B C; do ~/bin/FastQC/fastqc ${i}_[12]P.fastq.gz --outdir=../2023_04_20.fastqc; done &
 for i in D E F; do ~/bin/FastQC/fastqc ${i}_[12]P.fastq.gz --outdir=../2023_04_20.fastqc; done &
