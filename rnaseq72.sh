@@ -34,3 +34,8 @@ conda activate mqc
 # wywołanie z opcją zapewniającą dynamiczne wykresy przy dużej liczbie prób
 multiqc --interactive .
 conda deactivate
+
+# Po przejrzeniu wyniku multiqc
+# G3 R1 i R2 - nadal o połowę mniej unikalnych odczytów niż reszta z liści
+# A4 R1 - zniknął pik w wykresie %GC
+# A4 R1 - over-represented sequences porównywalne z resztą prób
