@@ -39,3 +39,4 @@ conda deactivate
 # G3 R1 i R2 - nadal o połowę mniej unikalnych odczytów niż reszta z liści
 # A4 R1 - zniknął pik w wykresie %GC
 # A4 R1 - over-represented sequences porównywalne z resztą prób
+# A4 - "Per base sequence content" porównywalne do innych
