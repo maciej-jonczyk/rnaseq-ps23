@@ -27,6 +27,7 @@ shutdown -h +10
 
 # to było źle zrobione, fastqc działało w tle a shutdown razem z tym i wyłączyło 10 min po rozpoczęciu
 # Więc fastqc musiałem zrobić jeszcze raz
+# Trzeba by opóźnić ostatnie fastqc i wywołać je nie w tle, wtedy shutdown musiałoby poczekać.
 
 # Instalacja multiqc, w Trisquel musi być przez Conda
 conda create --name mqc multiqc
@@ -40,3 +41,18 @@ conda deactivate
 # A4 R1 - zniknął pik w wykresie %GC
 # A4 R1 - over-represented sequences porównywalne z resztą prób
 # A4 - "Per base sequence content" porównywalne do innych
+
+# Mapowanie tych 72 prób, wszystkich, po uzupełnieniu danych przez CeNT dorobię co trzeba.
+# Włączam na dell, i tak zajmie to prawie 4 doby
+# skrypt map-72.sh
+# Mapowanie, poziom 2023_07_10.map
+# dane sekw. są na dysku 3Tb podłączonym przez unitek
+# dane genomu (indeks i NAMv5 są na dysku w dell)
+# Pętla obejmuje razem mapowanie i bamqc - w ten sposób łatwiej zobaczyć czy każda część procedury zakończy się pomyślnie i ile będzie trwała
+ulimit -n 10000
+for i in A B C D E F G H I J K L M N O P R S T U W X Y Z; do \
+for j in 1 3 4; do \
+~/bin/STAR_2.7.10b/Linux_x86_64/STAR --runThreadN 8 --readFilesIn ../2023_07_10.trim/${i}${j}_1P.fastq.gz ../2023_07_10.trim/${i}${j}_2P.fastq.gz --genomeDir ~/star-index --outSAMtype BAM SortedByCoordinate --outFileNamePrefix ${i}${j} --readFilesCommand zcat
+~/bin/BamQC/bin/bamqc ${i}${j}Aligned.sortedByCoord.out.bam --threads 8 -f ~/NAMv5/Zea_mays.Zm-B73-REFERENCE-NAM-5.0.55.chr.gtf -o ../2023_07_10.bamqc/; done; done
+
+shutdown -h +10
