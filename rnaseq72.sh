@@ -56,3 +56,9 @@ for j in 1 3 4; do \
 ~/bin/BamQC/bin/bamqc ${i}${j}Aligned.sortedByCoord.out.bam --threads 8 -f ~/NAMv5/Zea_mays.Zm-B73-REFERENCE-NAM-5.0.55.chr.gtf -o ../2023_07_10.bamqc/; done; done
 
 shutdown -h +10
+
+# Na dell przewidywana długość trwania to prawie 4 doby. Na jedno mapowanie: ok. 1 h 10 min + ok 3 min na bamqc
+# Pomysły na przyspieszenie, nzal. od kompa.
+# 1. W STAR użycie opcji genomeLoad z wartością LoadAndKeep     ... load genome into shared and keep it in memory after run
+# 2. W bamqc można wskazać liczbę procesorów ale i tak używa jednego - wywoływać po mapowaniu w tylu kopiach ile jest procesorów.
+# Dla 72 plików bam zamiast 216 min powinno dać 27 min
