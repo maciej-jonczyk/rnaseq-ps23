@@ -62,4 +62,17 @@ shutdown -h +10
 # 1. W STAR użycie opcji genomeLoad z wartością LoadAndKeep     ... load genome into shared and keep it in memory after run
 # Ładowanie trwa tylko 43 s, więc razem dla mapowania 72 PE dałoby 52 min mniej
 # 2. W bamqc można wskazać liczbę procesorów ale i tak używa jednego - wywoływać po mapowaniu w tylu kopiach ile jest procesorów.
+
+# Program się zawiesił - zgubione połączenie z dyskiem
+# Dalsze mapowanie od H1, używam opcji ładowania genomu i trymania go w pamięci, wydzielone bamqc w osobną pętlę na wypadek jakby interferowalo z tym.
+# Mapowanie, poziom 2023_07_10.map
+ulimit -n 10000
+for i in H I J K L M N O P R S T U W X Y Z; do \
+for j in 1 3 4; do \
+~/bin/STAR_2.7.10b/Linux_x86_64/STAR --limitBAMsortRAM 31619156 --genomeLoad LoadAndKeep --runThreadN 8 --readFilesIn ../2023_07_10.trim/${i}${j}_1P.fastq.gz ../2023_07_10.trim/${i}${j}_2P.fastq.gz --genomeDir ~/star-index --outSAMtype BAM SortedByCoordinate --outFileNamePrefix ${i}${j} --readFilesCommand zcat; done; done
+for i in H I J K L M N O P R S T U W X Y Z; do \
+for j in 1 3 4; do \
+~/bin/BamQC/bin/bamqc ${i}${j}Aligned.sortedByCoord.out.bam --threads 8 -f ~/NAMv5/Zea_mays.Zm-B73-REFERENCE-NAM-5.0.55.chr.gtf -o ../2023_07_10.bamqc/; done; done
+
+shutdown -h +10
 # Dla 72 plików bam zamiast 216 min powinno dać 27 min
