@@ -76,3 +76,37 @@ for j in 1 3 4; do \
 ~/bin/BamQC/bin/bamqc ${i}${j}Aligned.sortedByCoord.out.bam --threads 8 -f ~/NAMv5/Zea_mays.Zm-B73-REFERENCE-NAM-5.0.55.chr.gtf -o ../2023_07_10.bamqc/; done; done
 
 shutdown -h +10
+
+# Ostatecznie bez przechowywania genomu w pamięci - jest jej zbyt mało
+# Rozdzielenie bamqc na osiem procesów, ostatni dłuższy i w foreground, żeby wyłączenie zadziałało
+# Mapowanie, poziom 2023_07_10.map
+ulimit -n 10000
+for i in H I J K L M N O P R S T U W X Y Z; do \
+for j in 1 3 4; do \
+~/bin/STAR_2.7.10b/Linux_x86_64/STAR --runThreadN 8 --readFilesIn ../2023_07_10.trim/${i}${j}_1P.fastq.gz ../2023_07_10.trim/${i}${j}_2P.fastq.gz --genomeDir ~/star-index --outSAMtype BAM SortedByCoordinate --outFileNamePrefix ${i}${j} --readFilesCommand zcat; done; done
+for i in H I; do \
+for j in 1 3 4; do \
+~/bin/BamQC/bin/bamqc ${i}${j}Aligned.sortedByCoord.out.bam --threads 8 -f ~/NAMv5/Zea_mays.Zm-B73-REFERENCE-NAM-5.0.55.chr.gtf -o ../2023_07_10.bamqc/; done; done &
+for i in J K; do \
+for j in 1 3 4; do \
+~/bin/BamQC/bin/bamqc ${i}${j}Aligned.sortedByCoord.out.bam --threads 8 -f ~/NAMv5/Zea_mays.Zm-B73-REFERENCE-NAM-5.0.55.chr.gtf -o ../2023_07_10.bamqc/; done; done &
+for i in L M; do \
+for j in 1 3 4; do \
+~/bin/BamQC/bin/bamqc ${i}${j}Aligned.sortedByCoord.out.bam --threads 8 -f ~/NAMv5/Zea_mays.Zm-B73-REFERENCE-NAM-5.0.55.chr.gtf -o ../2023_07_10.bamqc/; done; done &
+for i in N O; do \
+for j in 1 3 4; do \
+~/bin/BamQC/bin/bamqc ${i}${j}Aligned.sortedByCoord.out.bam --threads 8 -f ~/NAMv5/Zea_mays.Zm-B73-REFERENCE-NAM-5.0.55.chr.gtf -o ../2023_07_10.bamqc/; done; done &
+for i in P R; do \
+for j in 1 3 4; do \
+~/bin/BamQC/bin/bamqc ${i}${j}Aligned.sortedByCoord.out.bam --threads 8 -f ~/NAMv5/Zea_mays.Zm-B73-REFERENCE-NAM-5.0.55.chr.gtf -o ../2023_07_10.bamqc/; done; done &
+for i in S T; do \
+for j in 1 3 4; do \
+~/bin/BamQC/bin/bamqc ${i}${j}Aligned.sortedByCoord.out.bam --threads 8 -f ~/NAMv5/Zea_mays.Zm-B73-REFERENCE-NAM-5.0.55.chr.gtf -o ../2023_07_10.bamqc/; done; done &
+for i in U W; do \
+for j in 1 3 4; do \
+~/bin/BamQC/bin/bamqc ${i}${j}Aligned.sortedByCoord.out.bam --threads 8 -f ~/NAMv5/Zea_mays.Zm-B73-REFERENCE-NAM-5.0.55.chr.gtf -o ../2023_07_10.bamqc/; done; done &
+for i in X Y Z; do \
+for j in 1 3 4; do \
+~/bin/BamQC/bin/bamqc ${i}${j}Aligned.sortedByCoord.out.bam --threads 8 -f ~/NAMv5/Zea_mays.Zm-B73-REFERENCE-NAM-5.0.55.chr.gtf -o ../2023_07_10.bamqc/; done; done
+shutdown -h +10
+# bez --limitBAMsortRAM 30000000000 --genomeLoad LoadAndKeep
