@@ -110,3 +110,31 @@ for j in 1 3 4; do \
 ~/bin/BamQC/bin/bamqc ${i}${j}Aligned.sortedByCoord.out.bam --threads 8 -f ~/NAMv5/Zea_mays.Zm-B73-REFERENCE-NAM-5.0.55.chr.gtf -o ../2023_07_10.bamqc/; done; done
 shutdown -h +10
 # bez --limitBAMsortRAM 30000000000 --genomeLoad LoadAndKeep
+
+# Utracono połączenie z dyskiem w trakcie analizy bamqc -> nowa analiza, już z jednym procesorem na polecenie
+for i in H I; do \
+for j in 1 3 4; do \
+~/bin/BamQC/bin/bamqc ${i}${j}Aligned.sortedByCoord.out.bam -f ~/NAMv5/Zea_mays.Zm-B73-REFERENCE-NAM-5.0.55.chr.gtf -o ../2023_07_10.bamqc/; done; done &
+for i in J K; do \
+for j in 1 3 4; do \
+~/bin/BamQC/bin/bamqc ${i}${j}Aligned.sortedByCoord.out.bam -f ~/NAMv5/Zea_mays.Zm-B73-REFERENCE-NAM-5.0.55.chr.gtf -o ../2023_07_10.bamqc/; done; done &
+for i in L M; do \
+for j in 1 3 4; do \
+~/bin/BamQC/bin/bamqc ${i}${j}Aligned.sortedByCoord.out.bam -f ~/NAMv5/Zea_mays.Zm-B73-REFERENCE-NAM-5.0.55.chr.gtf -o ../2023_07_10.bamqc/; done; done &
+for i in N O; do \
+for j in 1 3 4; do \
+~/bin/BamQC/bin/bamqc ${i}${j}Aligned.sortedByCoord.out.bam -f ~/NAMv5/Zea_mays.Zm-B73-REFERENCE-NAM-5.0.55.chr.gtf -o ../2023_07_10.bamqc/; done; done &
+for i in P R; do \
+for j in 1 3 4; do \
+~/bin/BamQC/bin/bamqc ${i}${j}Aligned.sortedByCoord.out.bam -f ~/NAMv5/Zea_mays.Zm-B73-REFERENCE-NAM-5.0.55.chr.gtf -o ../2023_07_10.bamqc/; done; done &
+for i in S T; do \
+for j in 1 3 4; do \
+~/bin/BamQC/bin/bamqc ${i}${j}Aligned.sortedByCoord.out.bam -f ~/NAMv5/Zea_mays.Zm-B73-REFERENCE-NAM-5.0.55.chr.gtf -o ../2023_07_10.bamqc/; done; done &
+for i in U W; do \
+for j in 1 3 4; do \
+~/bin/BamQC/bin/bamqc ${i}${j}Aligned.sortedByCoord.out.bam -f ~/NAMv5/Zea_mays.Zm-B73-REFERENCE-NAM-5.0.55.chr.gtf -o ../2023_07_10.bamqc/; done; done &
+for i in X Y Z; do \
+for j in 1 3 4; do \
+~/bin/BamQC/bin/bamqc ${i}${j}Aligned.sortedByCoord.out.bam -f ~/NAMv5/Zea_mays.Zm-B73-REFERENCE-NAM-5.0.55.chr.gtf -o ../2023_07_10.bamqc/; done; done &
+shutdown -h +10
+
