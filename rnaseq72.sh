@@ -78,40 +78,16 @@ for j in 1 3 4; do \
 shutdown -h +10
 
 # Ostatecznie bez przechowywania genomu w pamięci - jest jej zbyt mało
-# Rozdzielenie bamqc na osiem procesów, ostatni dłuższy i w foreground, żeby wyłączenie zadziałało
 # Mapowanie, poziom 2023_07_10.map
 ulimit -n 10000
 for i in H I J K L M N O P R S T U W X Y Z; do \
 for j in 1 3 4; do \
 ~/bin/STAR_2.7.10b/Linux_x86_64/STAR --runThreadN 8 --readFilesIn ../2023_07_10.trim/${i}${j}_1P.fastq.gz ../2023_07_10.trim/${i}${j}_2P.fastq.gz --genomeDir ~/star-index --outSAMtype BAM SortedByCoordinate --outFileNamePrefix ${i}${j} --readFilesCommand zcat; done; done
-for i in H I; do \
-for j in 1 3 4; do \
-~/bin/BamQC/bin/bamqc ${i}${j}Aligned.sortedByCoord.out.bam --threads 8 -f ~/NAMv5/Zea_mays.Zm-B73-REFERENCE-NAM-5.0.55.chr.gtf -o ../2023_07_10.bamqc/; done; done &
-for i in J K; do \
-for j in 1 3 4; do \
-~/bin/BamQC/bin/bamqc ${i}${j}Aligned.sortedByCoord.out.bam --threads 8 -f ~/NAMv5/Zea_mays.Zm-B73-REFERENCE-NAM-5.0.55.chr.gtf -o ../2023_07_10.bamqc/; done; done &
-for i in L M; do \
-for j in 1 3 4; do \
-~/bin/BamQC/bin/bamqc ${i}${j}Aligned.sortedByCoord.out.bam --threads 8 -f ~/NAMv5/Zea_mays.Zm-B73-REFERENCE-NAM-5.0.55.chr.gtf -o ../2023_07_10.bamqc/; done; done &
-for i in N O; do \
-for j in 1 3 4; do \
-~/bin/BamQC/bin/bamqc ${i}${j}Aligned.sortedByCoord.out.bam --threads 8 -f ~/NAMv5/Zea_mays.Zm-B73-REFERENCE-NAM-5.0.55.chr.gtf -o ../2023_07_10.bamqc/; done; done &
-for i in P R; do \
-for j in 1 3 4; do \
-~/bin/BamQC/bin/bamqc ${i}${j}Aligned.sortedByCoord.out.bam --threads 8 -f ~/NAMv5/Zea_mays.Zm-B73-REFERENCE-NAM-5.0.55.chr.gtf -o ../2023_07_10.bamqc/; done; done &
-for i in S T; do \
-for j in 1 3 4; do \
-~/bin/BamQC/bin/bamqc ${i}${j}Aligned.sortedByCoord.out.bam --threads 8 -f ~/NAMv5/Zea_mays.Zm-B73-REFERENCE-NAM-5.0.55.chr.gtf -o ../2023_07_10.bamqc/; done; done &
-for i in U W; do \
-for j in 1 3 4; do \
-~/bin/BamQC/bin/bamqc ${i}${j}Aligned.sortedByCoord.out.bam --threads 8 -f ~/NAMv5/Zea_mays.Zm-B73-REFERENCE-NAM-5.0.55.chr.gtf -o ../2023_07_10.bamqc/; done; done &
-for i in X Y Z; do \
-for j in 1 3 4; do \
-~/bin/BamQC/bin/bamqc ${i}${j}Aligned.sortedByCoord.out.bam --threads 8 -f ~/NAMv5/Zea_mays.Zm-B73-REFERENCE-NAM-5.0.55.chr.gtf -o ../2023_07_10.bamqc/; done; done
-shutdown -h +10
+
 # bez --limitBAMsortRAM 30000000000 --genomeLoad LoadAndKeep
+# The 3Tb disk has bad-sectors so I have to repeat mapping for G4 and P3 samples, as above
 
-# Utracono połączenie z dyskiem w trakcie analizy bamqc -> nowa analiza, już z jednym procesorem na polecenie
+# New QC analysis, thea last command have run in foreground - in this way shutdown must wait for QC completion
 for i in H I; do \
 for j in 1 3 4; do \
 ~/bin/BamQC/bin/bamqc ${i}${j}Aligned.sortedByCoord.out.bam -f ~/NAMv5/Zea_mays.Zm-B73-REFERENCE-NAM-5.0.55.chr.gtf -o ../2023_07_10.bamqc/; done; done &
@@ -135,6 +111,42 @@ for j in 1 3 4; do \
 ~/bin/BamQC/bin/bamqc ${i}${j}Aligned.sortedByCoord.out.bam -f ~/NAMv5/Zea_mays.Zm-B73-REFERENCE-NAM-5.0.55.chr.gtf -o ../2023_07_10.bamqc/; done; done &
 for i in X Y Z; do \
 for j in 1 3 4; do \
-~/bin/BamQC/bin/bamqc ${i}${j}Aligned.sortedByCoord.out.bam -f ~/NAMv5/Zea_mays.Zm-B73-REFERENCE-NAM-5.0.55.chr.gtf -o ../2023_07_10.bamqc/; done; done &
+~/bin/BamQC/bin/bamqc ${i}${j}Aligned.sortedByCoord.out.bam -f ~/NAMv5/Zea_mays.Zm-B73-REFERENCE-NAM-5.0.55.chr.gtf -o ../2023_07_10.bamqc/; done; done
 shutdown -h +10
 
+# Visual inspection of bamqc results - they look okay
+# Further commands run on other disk - Seagate...
+# Quality filtering, sorting and indexing,2023_07_10.map level
+for i in A B C D E F G H I J K L M N O P R S T U W X Y Z; do \
+for j in 1 3 4; do \
+samtools view -@8 -bq10 ${i}${j}Aligned.sortedByCoord.out.bam -o q10-srt-idx/${i}${j}q10.bam && samtools sort -@8 -o q10-srt-idx/${i}${j}q10srt.bam q10-srt-idx/${i}${j}q10.bam && cd q10-srt-idx && samtools index -@8 ${i}${j}q10srt.bam && rm ${i}${j}q10.bam && echo zrobione ${i}${j} && cd .. ; done; done
+# In the same script multiBamSummary for each new relication was run
+cd q10-srt-idx
+multiBamSummary bins --bamfiles A1q10srt.bam B1q10srt.bam C1q10srt.bam D1q10srt.bam E1q10srt.bam F1q10srt.bam G1q10srt.bam H1q10srt.bam I1q10srt.bam J1q10srt.bam K1q10srt.bam L1q10srt.bam M1q10srt.bam N1q10srt.bam O1q10srt.bam P1q10srt.bam R1q10srt.bam S1q10srt.bam T1q10srt.bam U1q10srt.bam W1q10srt.bam X1q10srt.bam Y1q10srt.bam Z1q10srt.bam --labels l.a5.18 l.a5.02 l.a5.10 l.s0.18 l.s0.02 l.s0.10 l.s8.18 l.s8.02 l.s8.10 l.s3.18 l.s3.02 l.s3.10 s.a5.18 s.a5.02 s.a5.10 s.s0.18 s.s0.02 s.s0.10 s.s8.18 s.s8.02 s.s8.10 s.s3.18 s.s3.02 s.s3.10 -p 8 -o ../../2023_07_10.pca/macierz1.npz
+multiBamSummary bins --bamfiles A3q10srt.bam B3q10srt.bam C3q10srt.bam D3q10srt.bam E3q10srt.bam F3q10srt.bam G3q10srt.bam H3q10srt.bam I3q10srt.bam J3q10srt.bam K3q10srt.bam L3q10srt.bam M3q10srt.bam N3q10srt.bam O3q10srt.bam P3q10srt.bam R3q10srt.bam S3q10srt.bam T3q10srt.bam U3q10srt.bam W3q10srt.bam X3q10srt.bam Y3q10srt.bam Z3q10srt.bam --labels l.a5.18 l.a5.02 l.a5.10 l.s0.18 l.s0.02 l.s0.10 l.s8.18 l.s8.02 l.s8.10 l.s3.18 l.s3.02 l.s3.10 s.a5.18 s.a5.02 s.a5.10 s.s0.18 s.s0.02 s.s0.10 s.s8.18 s.s8.02 s.s8.10 s.s3.18 s.s3.02 s.s3.10 -p 8 -o ../../2023_07_10.pca/macierz3.npz
+multiBamSummary bins --bamfiles A4q10srt.bam B4q10srt.bam C4q10srt.bam D4q10srt.bam E4q10srt.bam F4q10srt.bam G4q10srt.bam H4q10srt.bam I4q10srt.bam J4q10srt.bam K4q10srt.bam L4q10srt.bam M4q10srt.bam N4q10srt.bam O4q10srt.bam P4q10srt.bam R4q10srt.bam S4q10srt.bam T4q10srt.bam U4q10srt.bam W4q10srt.bam X4q10srt.bam Y4q10srt.bam Z4q10srt.bam --labels l.a5.18 l.a5.02 l.a5.10 l.s0.18 l.s0.02 l.s0.10 l.s8.18 l.s8.02 l.s8.10 l.s3.18 l.s3.02 l.s3.10 s.a5.18 s.a5.02 s.a5.10 s.s0.18 s.s0.02 s.s0.10 s.s8.18 s.s8.02 s.s8.10 s.s3.18 s.s3.02 s.s3.10 -p 8 -o ../../2023_07_10.pca/macierz4.npz
+shutdown -h +10
+
+# PCA plots, this time on "feniks" so in conda, 2023_07_10.pca level
+conda activate deeptools
+plotPCA -in macierz1.npz -l l.a5.18 l.a5.02 l.a5.10 l.s0.18 l.s0.02 l.s0.10 l.s8.18 l.s8.02 l.s8.10 l.s3.18 l.s3.02 l.s3.10 s.a5.18 s.a5.02 s.a5.10 s.s0.18 s.s0.02 s.s0.10 s.s8.18 s.s8.02 s.s8.10 s.s3.18 s.s3.02 s.s3.10 --colors '#f06292' '#f06292' '#f06292' '#4dd0e1' '#4dd0e1' '#4dd0e1' '#aed581' '#aed581' '#aed581' '#ffe082' '#ffe082' '#ffe082' '#c2185b' '#c2185b' '#c2185b' '#0097a7' '#0097a7' '#0097a7' '#689f38' '#689f38' '#689f38' '#ffa000' '#ffa000' '#ffa000'  --markers 'v' 'o' 'x' --transpose -o pca1.svg
+plotPCA -in macierz3.npz -l l.a5.18 l.a5.02 l.a5.10 l.s0.18 l.s0.02 l.s0.10 l.s8.18 l.s8.02 l.s8.10 l.s3.18 l.s3.02 l.s3.10 s.a5.18 s.a5.02 s.a5.10 s.s0.18 s.s0.02 s.s0.10 s.s8.18 s.s8.02 s.s8.10 s.s3.18 s.s3.02 s.s3.10 --colors '#f06292' '#f06292' '#f06292' '#4dd0e1' '#4dd0e1' '#4dd0e1' '#aed581' '#aed581' '#aed581' '#ffe082' '#ffe082' '#ffe082' '#c2185b' '#c2185b' '#c2185b' '#0097a7' '#0097a7' '#0097a7' '#689f38' '#689f38' '#689f38' '#ffa000' '#ffa000' '#ffa000'  --markers 'v' 'o' 'x' --transpose -o pca3.svg
+plotPCA -in macierz4.npz -l l.a5.18 l.a5.02 l.a5.10 l.s0.18 l.s0.02 l.s0.10 l.s8.18 l.s8.02 l.s8.10 l.s3.18 l.s3.02 l.s3.10 s.a5.18 s.a5.02 s.a5.10 s.s0.18 s.s0.02 s.s0.10 s.s8.18 s.s8.02 s.s8.10 s.s3.18 s.s3.02 s.s3.10 --colors '#f06292' '#f06292' '#f06292' '#4dd0e1' '#4dd0e1' '#4dd0e1' '#aed581' '#aed581' '#aed581' '#ffe082' '#ffe082' '#ffe082' '#c2185b' '#c2185b' '#c2185b' '#0097a7' '#0097a7' '#0097a7' '#689f38' '#689f38' '#689f38' '#ffa000' '#ffa000' '#ffa000'  --markers 'v' 'o' 'x' --transpose -o pca4.svg
+conda deactivate
+
+# As in the 2nd 24 hours tissue separates dataset most.
+# In the 3rd 24 hours the leaf samples from night cluster together, but the % variability is really low
+# In the 4th 24 hours the sample l.s3.10 clearly outlies. It is L	leaf	s311	10-17 so it has L4 id.
+
+# Clustering
+conda activate deeptools
+plotCorrelation --corData macierz1.npz -c pearson -p heatmap -o pear1.svg
+plotCorrelation --corData macierz3.npz -c pearson -p heatmap -o pear3.svg
+plotCorrelation --corData macierz4.npz -c pearson -p heatmap -o pear4.svg
+conda deactivate
+# Don't show anythnin interesting
+
+# In the meantime at Dell multiBamSummary for all samples is running
+# 2023_07_10.map/q10-srt-idx/ level
+multiBamSummary bins --bamfiles A1q10srt.bam B1q10srt.bam C1q10srt.bam D1q10srt.bam E1q10srt.bam F1q10srt.bam G1q10srt.bam H1q10srt.bam I1q10srt.bam J1q10srt.bam K1q10srt.bam L1q10srt.bam M1q10srt.bam N1q10srt.bam O1q10srt.bam P1q10srt.bam R1q10srt.bam S1q10srt.bam T1q10srt.bam U1q10srt.bam W1q10srt.bam X1q10srt.bam Y1q10srt.bam Z1q10srt.bam ../../2023_04_20.map/q10-srt-idx/Aq10srt.bam ../../2023_04_20.map/q10-srt-idx/Bq10srt.bam ../../2023_04_20.map/q10-srt-idx/Cq10srt.bam ../../2023_04_20.map/q10-srt-idx/Dq10srt.bam ../../2023_04_20.map/q10-srt-idx/Eq10srt.bam ../../2023_04_20.map/q10-srt-idx/Fq10srt.bam ../../2023_04_20.map/q10-srt-idx/Gq10srt.bam ../../2023_04_20.map/q10-srt-idx/Hq10srt.bam ../../2023_04_20.map/q10-srt-idx/Iq10srt.bam ../../2023_04_20.map/q10-srt-idx/Jq10srt.bam ../../2023_04_20.map/q10-srt-idx/Kq10srt.bam ../../2023_04_20.map/q10-srt-idx/Lq10srt.bam ../../2023_04_20.map/q10-srt-idx/Mq10srt.bam ../../2023_04_20.map/q10-srt-idx/Nq10srt.bam ../../2023_04_20.map/q10-srt-idx/Oq10srt.bam ../../2023_04_20.map/q10-srt-idx/Pq10srt.bam ../../2023_04_20.map/q10-srt-idx/Rq10srt.bam ../../2023_04_20.map/q10-srt-idx/Sq10srt.bam ../../2023_04_20.map/q10-srt-idx/Tq10srt.bam ../../2023_04_20.map/q10-srt-idx/Uq10srt.bam ../../2023_04_20.map/q10-srt-idx/Wq10srt.bam ../../2023_04_20.map/q10-srt-idx/Xq10srt.bam ../../2023_04_20.map/q10-srt-idx/Yq10srt.bam ../../2023_04_20.map/q10-srt-idx/Zq10srt.bam A3q10srt.bam B3q10srt.bam C3q10srt.bam D3q10srt.bam E3q10srt.bam F3q10srt.bam G3q10srt.bam H3q10srt.bam I3q10srt.bam J3q10srt.bam K3q10srt.bam L3q10srt.bam M3q10srt.bam N3q10srt.bam O3q10srt.bam P3q10srt.bam R3q10srt.bam S3q10srt.bam T3q10srt.bam U3q10srt.bam W3q10srt.bam X3q10srt.bam Y3q10srt.bam Z3q10srt.bam A4q10srt.bam B4q10srt.bam C4q10srt.bam D4q10srt.bam E4q10srt.bam F4q10srt.bam G4q10srt.bam H4q10srt.bam I4q10srt.bam J4q10srt.bam K4q10srt.bam L4q10srt.bam M4q10srt.bam N4q10srt.bam O4q10srt.bam P4q10srt.bam R4q10srt.bam S4q10srt.bam T4q10srt.bam U4q10srt.bam W4q10srt.bam X4q10srt.bam Y4q10srt.bam Z4q10srt.bam --labels l.a5.18d1 l.a5.02d1 l.a5.10d1 l.s0.18d1 l.s0.02d1 l.s0.10d1 l.s8.18d1 l.s8.02d1 l.s8.10d1 l.s3.18d1 l.s3.02d1 l.s3.10d1 s.a5.18d1 s.a5.02d1 s.a5.10d1 s.s0.18d1 s.s0.02d1 s.s0.10d1 s.s8.18d1 s.s8.02d1 s.s8.10d1 s.s3.18d1 s.s3.02d1 s.s3.10d1 l.a5.18d2 l.a5.02d2 l.a5.10d2 l.s0.18d2 l.s0.02d2 l.s0.10d2 l.s8.18d2 l.s8.02d2 l.s8.10d2 l.s3.18d2 l.s3.02d2 l.s3.10d2 s.a5.18d2 s.a5.02d2 s.a5.10d2 s.s0.18d2 s.s0.02d2 s.s0.10d2 s.s8.18d2 s.s8.02d2 s.s8.10d2 s.s3.18d2 s.s3.02d2 s.s3.10d2 l.a5.18d3 l.a5.02d3 l.a5.10d3 l.s0.18d3 l.s0.02d3 l.s0.10d3 l.s8.18d3 l.s8.02d3 l.s8.10d3 l.s3.18d3 l.s3.02d3 l.s3.10d3 s.a5.18d3 s.a5.02d3 s.a5.10d3 s.s0.18d3 s.s0.02d3 s.s0.10d3 s.s8.18d3 s.s8.02d3 s.s8.10d3 s.s3.18d3 s.s3.02d3 s.s3.10d3 l.a5.18d4 l.a5.02d4 l.a5.10d4 l.s0.18d4 l.s0.02d4 l.s0.10d4 l.s8.18d4 l.s8.02d4 l.s8.10d4 l.s3.18d4 l.s3.02d4 l.s3.10d4 s.a5.18d4 s.a5.02d4 s.a5.10d4 s.s0.18d4 s.s0.02d4 s.s0.10d4 s.s8.18d4 s.s8.02d4 s.s8.10d4 s.s3.18d4 s.s3.02d4 s.s3.10d4 -p 8 -o ../../2023_07_10.pca/macierz1powt.npz
+shutdown -h +10
