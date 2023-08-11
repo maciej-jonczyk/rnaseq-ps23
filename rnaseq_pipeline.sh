@@ -32,6 +32,8 @@ ant
 # Program podumowujący
 pip install multiqc
 # do działania muszą być pliki zip po np. fastqc, same html nie są obsługiwane!
+# Aktualizacja
+pip install --upgrade multiqc
 
 # Trymowanie w pliku rnaseq-ost
 
