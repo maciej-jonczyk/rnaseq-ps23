@@ -154,8 +154,8 @@ multiBamSummary bins --bamfiles A1q10srt.bam B1q10srt.bam C1q10srt.bam D1q10srt.
 shutdown -h +10
 
 # Moving count results to new directory
-mkdir allcounts
-mv counts1p.txt* allcounts/
+mkdir 2023_07_10.counts
+mv counts1p.txt* 2023_07_10.counts/
 # statistics
 multiqc .
 # conclusions, even though few samples looked like outliers at the sount level differences are not visible.
