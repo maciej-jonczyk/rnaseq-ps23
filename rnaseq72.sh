@@ -144,7 +144,7 @@ plotCorrelation --corData macierz1.npz -c pearson -p heatmap -o pear1.svg
 plotCorrelation --corData macierz3.npz -c pearson -p heatmap -o pear3.svg
 plotCorrelation --corData macierz4.npz -c pearson -p heatmap -o pear4.svg
 conda deactivate
-# Don't show anythnin interesting
+# Don't show anything interesting
 
 # In the meantime at Dell multiBamSummary for all samples is running. After that fragment counting for all samples.
 # For sample N highly sequenced original file is used as it don't disturb the analysis.
@@ -175,3 +175,23 @@ plotPCA -in macierz1powt-sam.npz -l a5.18d1      a5.02d1 a5.10d1 s0.18d1 s0.02d1
 # in case of leaves two 'cold' periods are separated from two 'regrowth' ones.
 # for sam this is not visible
 # Also it seems that 's3' line is somewhat separated by 2nd PC
+
+# 24.08.23 - CeNT dosłał A4 uzupełnione o 20% odczytów (sklejone stare fastq z 10.07 i nowe 20%) i nowe sekwencjonowanie G3 (G3_S9)
+# Analiza fastqc od nich OK
+# Trymowanie i Fastqc
+for i in A4 G3_S9 ; do java -jar /home/mj/bin/Trimmomatic-0.39/trimmomatic-0.39.jar PE -threads 8 ../../sekw-surowe/rna/ps23/2023_08_24/raw_data/${i}_R1_001.fastq.gz ../../sekw-surowe/rna/ps23/2023_08_24/raw_data/${i}_R2_001.fastq.gz -baseout ${i}.fastq.gz ILLUMINACLIP:/home/mj/bin/Trimmomatic-0.39/adapters/TruSeq3-PE-2.fa:2:30:10:2:true MINLEN:40; done
+~/bin/FastQC/fastqc A4_1P.fastq.gz --outdir=../2023_08_24.fastqc &
+~/bin/FastQC/fastqc A4_2P.fastq.gz --outdir=../2023_08_24.fastqc &
+~/bin/FastQC/fastqc G3_S9_1P.fastq.gz --outdir=../2023_08_24.fastqc &
+~/bin/FastQC/fastqc G3_S9_2P.fastq.gz --outdir=../2023_08_24.fastqc &
+
+# Mapowanie
+for i in A4 G3_S9 ; do ~/bin/STAR_2.7.10b/Linux_x86_64/STAR --runThreadN 24 --readFilesIn ../2023_08_24.trim/${i}_1P.fastq.gz ../2023_08_24.trim/${i}_2P.fastq.gz --genomeDir ../../star-index --outSAMtype BAM SortedByCoordinate --outFileNamePrefix ${i} --readFilesCommand zcat; done
+
+# bamqc
+~/bin/BamQC-master/bin/bamqc G3_S9Aligned.sortedByCoord.out.bam --threads 24 -f ../../NAMv5/Zea_mays.Zm-B73-REFERENCE-NAM-5.0.55.chr.gtf -o ../2023_08_24.bamqc/ &
+~/bin/BamQC-master/bin/bamqc A4Aligned.sortedByCoord.out.bam --threads 24 -f ../../NAMv5/Zea_mays.Zm-B73-REFERENCE-NAM-5.0.55.chr.gtf -o ../2023_08_24.bamqc/ &
+# Wynik OK
+
+# Filtrowanie i sortowanie
+for i in A4 G3_S9 ; do samtools view -@24 -bq10 ${i}Aligned.sortedByCoord.out.bam -o q10-srt-idx/${i}q10.bam && samtools sort -@24 -o q10-srt-idx/${i}q10srt.bam q10-srt-idx/${i}q10.bam && cd q10-srt-idx && samtools index -@24 ${i}q10srt.bam && rm ${i}q10.bam && echo zrobione ${i} && cd .. ; done
