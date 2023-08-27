@@ -195,3 +195,14 @@ for i in A4 G3_S9 ; do ~/bin/STAR_2.7.10b/Linux_x86_64/STAR --runThreadN 24 --re
 
 # Filtrowanie i sortowanie
 for i in A4 G3_S9 ; do samtools view -@24 -bq10 ${i}Aligned.sortedByCoord.out.bam -o q10-srt-idx/${i}q10.bam && samtools sort -@24 -o q10-srt-idx/${i}q10srt.bam q10-srt-idx/${i}q10.bam && cd q10-srt-idx && samtools index -@24 ${i}q10srt.bam && rm ${i}q10.bam && echo zrobione ${i} && cd .. ; done
+
+# Zrobić multiqc na surowych, zestaw jak niżej
+
+# Multiqc na wszystkich plikach fastqc (zamiana starego A4 na nowy, dodanie G3_S9 obok starego G3) wyglada OK.
+# Analiza z poziomu nadrzędnego do katalogów
+multiqc --interactive 2023_04_20.fastqc 2023_07_10.fastqc/ 2023_08_24.fastqc
+
+# Zrobić multibamsummary osobno dla tkanek, z podmienionym A4 nowym zamiast starego, w pierwszej analizie dla liści dodać G3_S9 bez uzuwania G3.
+# Usunąć G3 po sprawdzeniu wyniku z powyższego.
+
+# Dalej Counts dla całego zbioru, będzie trzeba wymienić pliki po kolei bo nie są alfabetycznie
