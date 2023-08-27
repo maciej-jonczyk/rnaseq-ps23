@@ -202,7 +202,7 @@ for i in A4 G3_S9 ; do samtools view -@24 -bq10 ${i}Aligned.sortedByCoord.out.ba
 # Analiza z poziomu nadrzędnego do katalogów
 multiqc --interactive 2023_04_20.fastqc 2023_07_10.fastqc/ 2023_08_24.fastqc
 
-# Zrobić multibamsummary osobno dla tkanek, z podmienionym A4 nowym zamiast starego, w pierwszej analizie dla liści dodać G3_S9 bez uzuwania G3.
+# Zrobić nowe multibamsummary dla liści (sam bez zmian), z podmienionym A4 nowym zamiast starego, w pierwszej analizie dodać G3_S9 bez usuwania G3.
 # Usunąć G3 po sprawdzeniu wyniku z powyższego.
 
 # Dalej Counts dla całego zbioru, będzie trzeba wymienić pliki po kolei bo nie są alfabetycznie
