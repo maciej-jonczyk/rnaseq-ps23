@@ -307,6 +307,7 @@ __ambiguous     35403 # ok 1,8 %
 # >>>>>>>> Nowa wersja tu
 # https://cran.r-project.org/src/base/R-4/
 # tak trzeba w Trisquel insatalować, poprzedni sposób dał prawie najnowszą wersję dla Ubuntu, OK
+# Też inastalować r-base-dev, potrzebny do instalowania pakietów
 
 # Naprawienie dostępu do bibliotek pakietów R
 # https://stackoverflow.com/a/49366252/1040763
