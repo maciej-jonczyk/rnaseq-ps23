@@ -1,16 +1,19 @@
 # Based on https://bioconductor.org/packages/release/workflows/html/rnaseqGene.html
+# Uses files made in counts4r.sh
 # read-in ranges
 library("GenomicRanges")
 library("IRanges")
-# separtor to spacja
-# najpierw obiekt IRanges
+# space is a field separator
+# first, construct IRanges object
 dozakresow=read.table("geny4ranges",sep=" ",header=T)
 zakresy=IRanges(start=dozakresow$start, end=dozakresow$end, names=dozakresow$names)
-# wczytanie długości chromosomów, nie muszą być posortowane
+# chromosome length, don't have to be sorted
 chr=read.table("counts.dlchrom", sep=" ", header=F, row.names=1)
 head(chr)
+# vector of lengths
 x=chr$V2
 class(x)
+# assigning chromosome names
 names(x)=rownames(chr)
 gzakresy=GRanges(seqnames=dozakresow$seqnames, ranges=zakresy, strand=dozakresow$strand, seqlengths=x)
 seqinfo(gzakresy)
@@ -36,7 +39,7 @@ keep <- rowSums(counts(dds)) > 1
 # removing rows of the DESeqDataSet that have no counts, or only a single count across all samples.
 
 ############################################
-# spróbować z
+# optionally, stronger filter
 # at least 3 samples with a count of 10 or higher
 keep <- rowSums(counts(dds) >= 10) >= 3
 ############################################
@@ -46,13 +49,12 @@ head(keep)
 dds.f <- dds[keep,]
 dim(dds.f)
 
-# dwie metody normalizacji
+# testing wo normalization methods
 vsd <- vst(dds.f, blind = FALSE)
 head(assay(vsd), 3)
 rld <- rlog(dds.f, blind = FALSE)
 
-# Porównanie dwóch metod normalizacji (stosowane tylko do eksploracji)
-# Jesli marudzi o braku czcionek -> https://askubuntu.com/a/1205053/150869
+# If fonts are not found -> https://askubuntu.com/a/1205053/150869
 df <- bind_rows(
   as.data.frame(assay(vsd)[, 1:2]) %>% mutate(transformation = "vst"),
   as.data.frame(assay(rld)[, 1:2]) %>% mutate(transformation = "rlog"))
@@ -65,7 +67,7 @@ library("DESeq2")
 ggplot(df, aes(x = x, y = y)) + geom_hex(bins = 80) +
   coord_fixed() + facet_grid( . ~ transformation) 
 
-# Klastrowanie
+# Clustering
 library("pheatmap")
 library("RColorBrewer")
 sampleDists <- dist(t(assay(vsd)))
@@ -78,7 +80,7 @@ pheatmap(sampleDistMatrix,
          clustering_distance_cols = sampleDists,
          col = colors)
 
-# Klastrowanie prób z odległością Poisson
+# Clustering with Poisson distance
 install.packages("PoiClaClu")
 library("PoiClaClu")
 poisd <- PoissonDistance(t(counts(dds.f)))
@@ -90,11 +92,11 @@ pheatmap(samplePoisDistMatrix,
          clustering_distance_cols = poisd$dd,
          col = colors)
          
-# PCA wbudowane w DESeq2
+# PCA in DESeq2
 plotPCA(vsd, intgroup = c("tk", "ln", "time"))
 plotPCA(vsd, intgroup = c("ln", "time"))
 
-# PCA z użyciem ggplot
+# PCA with ggplot
 pcaData=plotPCA(vsd, intgroup=c("ln", "time"), returnData=T)
 percentVar <- round(100 * attr(pcaData, "percentVar"))
 ggplot(pcaData, aes(PC1, PC2, color=ln, shape=time)) +
@@ -105,7 +107,7 @@ ggplot(pcaData, aes(PC1, PC2, color=ln, shape=time)) +
 dev.print(pdf, 'pca-counts.pdf')
 
 # GLM-PCA
-# Uwaga - to robi się na danych niestransformowanych
+# Attention - this is on non-transformed data!
 install.packages("glmpca")
 library("glmpca")
 gpca <- glmpca(counts(dds.f), L=2)
@@ -115,14 +117,14 @@ gpca.dat$time <- dds$time
 ggplot(gpca.dat, aes(x = dim1, y = dim2, color = ln, shape = time)) +
   geom_point(size =3) + coord_fixed() + ggtitle("glmpca - Generalized PCA")
 dev.print(pdf, 'glmpca-counts.pdf')
-# Inny obraz ale nie widać nowych wzorów
+# Different picture but still without patterns
 
-# Klastrowanie, tylko 50 genów o największej wariancji counts
+# Clustering, only 50 genes with greatest wariance of counts
 # wg https://bioconductor.org/packages/release/workflows/vignettes/rnaseqGene/inst/doc/rnaseqGene.html#gene-clustering
-## W bashu doinstalowanie pakietu
+## Installing required packages in bash
 sudo apt install -y libpng-dev
 sudo apt install libssl-dev
-# pakiet do filtrowania danych
+# package for data filtering
 if (!require("BiocManager", quietly = TRUE))
     install.packages("BiocManager")
 BiocManager::install("genefilter")
@@ -135,7 +137,7 @@ anno <- as.data.frame(colData(vsd)[, c("tk", "ln","time")])
 pheatmap(mat, annotation_col = anno)
 dev.print(pdf, 'heat-counts.pdf')
 
-# zapis surowego zbioru
+# saving raw dataset
 save(dds, file="dds.RDa")
-# zapis coldata i dwoch obiektow do ranges
+# saving coldata and two objects for constructing ranges
 save(coldata, dozakresow, chr, file="coldata-ranges.RDa")
