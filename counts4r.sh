@@ -1,3 +1,4 @@
+# This file explains construction of files used to make DESeqDataSet in DESeq2in R
 # before each session
 export LC_ALL=C
 # file after featureCounts - SEPARATE FOR EXPERIMENT
