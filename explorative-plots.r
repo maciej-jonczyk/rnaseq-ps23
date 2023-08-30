@@ -49,7 +49,7 @@ head(keep)
 dds.f <- dds[keep,]
 dim(dds.f)
 
-# testing wo normalization methods
+# testing two normalization methods
 vsd <- vst(dds.f, blind = FALSE)
 head(assay(vsd), 3)
 rld <- rlog(dds.f, blind = FALSE)
@@ -67,6 +67,7 @@ library("DESeq2")
 ggplot(df, aes(x = x, y = y)) + geom_hex(bins = 80) +
   coord_fixed() + facet_grid( . ~ transformation) 
 
+# In further analyses I use vsd-normalized data
 # Clustering
 library("pheatmap")
 library("RColorBrewer")
@@ -121,7 +122,7 @@ dev.print(pdf, 'glmpca-counts.pdf')
 
 # Clustering, only 50 genes with greatest wariance of counts
 # wg https://bioconductor.org/packages/release/workflows/vignettes/rnaseqGene/inst/doc/rnaseqGene.html#gene-clustering
-## Installing required packages in bash
+# Installing required packages in bash
 sudo apt install -y libpng-dev
 sudo apt install libssl-dev
 # package for data filtering
