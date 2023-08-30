@@ -28,6 +28,7 @@ boxplot(value~variable, data=zlicz1kol, log="y", col=c('#cfd8dc', '#607d8b', '#2
 # Attention, colors are misleading - one-tissue scheme was used for data with both tissues interleaved within day
 
 # Separate boxplots for tissues
+# In fact I could simply select rows based on value of "variable"
 # using dplyr package
 library(dplyr)
 # column with gene names
