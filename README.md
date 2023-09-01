@@ -14,6 +14,9 @@ In the end this package will not be used as it don't allow to compare multiple g
 
 *prb-expr-deseq.r* - test of differential gene expression analysis in DESeq2 package in R. This package will be most probably used for real analysis.
 
+- [ ] make GO analysis
+- [ ] other explorative analyses
+
 ## Analyses on real data
 *rnaseq-ost.sh* - the clean read-processing workflow, based on *rnaseq_pipeline.sh*
 
@@ -31,4 +34,4 @@ In the end this package will not be used as it don't allow to compare multiple g
 
 *explorative-plots.r* - exploring patterns in count data from first sequencing results (PCA and clustering)
 
-
+- [ ] correct data after correcting "U3" sample
