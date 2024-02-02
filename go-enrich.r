@@ -37,3 +37,7 @@ head(go.cats, 2)
 str(go.cats)
 
 # Three above files are valid for future analyses as long as genome version (assayed.genes, length.vec) or GO annotation (go.cats) don't change.
+
+# Vector of DE genes, here I used clustring results from maSigPro.
+# This package will NOT be used, but procedure will be the same.
+# Files "genesN" contains 
