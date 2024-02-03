@@ -93,9 +93,11 @@ res1.nocorr.vec=res1.nocorr$category
 # Retrieval of categories description
 library(GO.db)
 
-for(go in res1.nocorr.vec[1:10]){
-print(GOTERM[[go]])
+my_list <- list()
+for(go in res1.nocorr.vec[1:3]){
+output <- print(GOTERM[[go]])
 cat("--------------------------------------\n")
+my_list[[go]] <- output
 }
 
 # Exporting GO categories to external file
