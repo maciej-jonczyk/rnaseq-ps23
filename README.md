@@ -31,8 +31,11 @@ In the end this package will not be used as it don't allow to compare multiple g
 
 *boxplot-r.r* - simple boxplot of raw counts
 
-*counts-boxplots.r* - more advanced boxplots of read counts, involwing transformation and FPKM calculation
+*counts-boxplots.r* - more advanced boxplots of read counts, involving transformation and FPKM calculation
 
 *explorative-plots.r* - exploring patterns in count data from first sequencing results (PCA and clustering)
 
-- [ ] correct data after correcting "U3" sample - just (02.02.24) sent to sequencing along with 2nd replication of experiment
+- [ ] correct data after new sequencing of "U3" sample - just (02.02.24) sent to sequencing along with 2nd replication of experiment
+- [ ] full analysis of 2nd replication, plus joint PCA/clustering analysis
+- [ ] update sample names in count file to include replication number
+- [ ] check, if it is possible to make DE analysis on two replications (DEseq2)
