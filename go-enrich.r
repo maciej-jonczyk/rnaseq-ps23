@@ -98,4 +98,7 @@ print(GOTERM[[go]])
 cat("--------------------------------------\n")
 }
 
-# Works fine
+# Exporting GO categories to external file
+sink('my_list.txt')
+print(my_list)
+sink()
