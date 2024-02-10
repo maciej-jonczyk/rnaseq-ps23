@@ -1,13 +1,15 @@
 # Analiza time-course w DESeq2
 
-# https://hbctraining.github.io/DGE_workshop_salmon_online/lessons/08b_time_course_analyses.html
-# https://master.bioconductor.org/packages/release/workflows/vignettes/rnaseqGene/inst/doc/rnaseqGene.html#time-course-experiments
-# https://bioconductor.org/packages/release/bioc/vignettes/DESeq2/inst/doc/DESeq2.html#time-series-experiments
-# https://hbctraining.github.io/DGE_workshop/lessons/08_DGE_LRT.html
-# https://genviz.org/module-04-expression/0004/02/01/DifferentialExpression/
+https://master.bioconductor.org/packages/release/workflows/vignettes/rnaseqGene/inst/doc/rnaseqGene.html#time-course-experiments
+https://bioconductor.org/packages/release/bioc/vignettes/DESeq2/inst/doc/DESeq2.html#time-series-experiments
+https://hbctraining.github.io/DGE_workshop/lessons/08_DGE_LRT.html
+https://genviz.org/module-04-expression/0004/02/01/DifferentialExpression/
+https://www.r-bloggers.com/2021/04/note-for-deseq2-time-course-analysis/
+https://www.r-bloggers.com/2015/12/tutorial-rna-seq-differential-expression-pathway-analysis-with-sailfish-deseq2-gage-and-pathview/
 
 # Wczytanie danych (wczesniej zrobione w bash)
-# Wg https://bioconductor.org/packages/release/bioc/vignettes/DESeq2/inst/doc/DESeq2.html#count-matrix-input
+# Wg
+https://bioconductor.org/packages/release/bioc/vignettes/DESeq2/inst/doc/DESeq2.html#count-matrix-input
 # counts - tylko counts, 1. kolumna to Geneid, dalej po kolei próby z krótką czytelną nazwą
 cts <- as.matrix(read.table("counts4deseq-sample", sep="\t", header=T, row.names="Geneid"))
 # coldata - tylko potrzebne kolumny czyli próba i czynniki
@@ -43,7 +45,7 @@ keep <- rowSums(counts(dds)) > 1
 dds.f = dds[keep,]
 nrow(dds.f)
 
-# wg autora, filtrowanie na tym etapie tylko oprzyśpiesza analizę. I tak jest robione independent filtering przy wyliczaniuadj p-val
+# wg autora, filtrowanie na tym etapie tylko oprzyśpiesza analizę. I tak jest robione independent filtering przy wyliczaniu adj p-val
 # https://support.bioconductor.org/p/65256/#65260
 # Będę używał takiego filtrowania
 
