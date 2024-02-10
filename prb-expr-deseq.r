@@ -62,10 +62,10 @@ resFilt <- res[which(res$padj < 0.05), ]
 # Uporządkowanie względem rosnących adj p-val
 resFiltOrd <- resFilt[order(resFilt$padj),]
 # Eksport do csv
-write.csv(resOrderedDF, file = "results.csv")
+write.csv(resFiltOrd, file = "results.csv")
 
 #################################################################
-# JEŚLI explorative analysis wcześniej to warto zrobić
+# Required for Explorative Analysis if done before DE-analysis, in DE-analysis it is done by DESeq function
 dds <- estimateSizeFactors(dds)
 #################################################################
 
@@ -75,7 +75,7 @@ head(res[order(res$padj),], 4)
 library(ggplot2)
 prb <- plotCounts(dds, which.min(res$padj), intgroup = c("wiek","linia"), returnData = TRUE)
 prb$wiek <- as.numeric(as.character(prb$wiek))
-ggplot(prb, aes(x = wiek, y = count, color = linia, group = linia)) + geom_point() + stat_summary(fun.y=mean, geom="line") +   scale_y_log10()
+ggplot(prb, aes(x = wiek, y = count, color = linia, group = linia)) + geom_point() + stat_summary(fun=mean, geom="line") +   scale_y_log10()
 
 # test dla pojedynczego punktu czasowego
 res22 <- results(dds, name="liniavp5.wiek22", test="Wald")
@@ -86,7 +86,8 @@ res22[which.min(res22$padj),]
 # https://bioconductor.org/packages/release/bioc/manuals/DESeq2/man/DESeq2.pdf
 
 # heatmapa
-install.packages("pheatmap")
+install.packages("pheatmap") # if not installed already
+library(pheatmap)
 betas <- coef(dds)
 colnames(betas)
 # 20 najlepszych
