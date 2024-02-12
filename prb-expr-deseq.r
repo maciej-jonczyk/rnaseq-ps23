@@ -75,7 +75,8 @@ dds <- estimateSizeFactors(dds)
 head(res[order(res$padj),], 4)
 # Wykres time-course dla najlepszego wyniku wg adj p-val
 library(ggplot2)
-prb <- plotCounts(dds, which.min(res$padj), intgroup = c("wiek","linia"), returnData = TRUE)
+prb <- plotCounts(dds, which.min(res$padj), intgroup = c("wiek","linia"), returnData = TRUE) # for gene with minimal p-value
+prb <- plotCounts(dds, "Zm00001eb050410", intgroup = c("wiek","linia"), returnData = TRUE) # for selected gene (ID provided)
 prb$wiek <- as.numeric(as.character(prb$wiek))
 ggplot(prb, aes(x = wiek, y = count, color = linia, group = linia)) + geom_point() + stat_summary(fun=mean, geom="line") +   scale_y_log10()
 
