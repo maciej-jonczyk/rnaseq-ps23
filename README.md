@@ -2,6 +2,8 @@
 RNA-seq pipeline, from raw reads to biological interpretaion of time-course experiment.
 Whenewer possible bash command-line tools are preffered over R.
 
+- [ ] English localization
+
 *alternatywy.r* - just some links to web pages with potentially usefu information.
 
 ## Analyses on simulated or test data
