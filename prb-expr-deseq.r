@@ -80,6 +80,18 @@ prb <- plotCounts(dds, "Zm00001eb050410", intgroup = c("wiek","linia"), returnDa
 prb$wiek <- as.numeric(as.character(prb$wiek))
 ggplot(prb, aes(x = wiek, y = count, color = linia, group = linia)) + geom_point() + stat_summary(fun=mean, geom="line") +   scale_y_log10()
 
+# Extracting raw reads for significant genes
+sig.reads <- dds.f[which(res$padj < 0.05), ]
+# the result is DESeqDataSet
+# Extracting matrix for ExpressionSet
+sig.reads.matrix=assay(sig.reads)
+# creating ExpressionSet (minimal - only expression values)
+eset <- new("ExpressionSet",exprs=sig.reads.matrix)
+head(exprs(eset), 3)
+
+# Removing obiects by substring in name
+rm(list=ls(pattern="if"))
+
 # test dla pojedynczego punktu czasowego
 res22 <- results(dds, name="liniavp5.wiek22", test="Wald")
 # Najlepszy wynik
