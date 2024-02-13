@@ -61,3 +61,5 @@ sed '/^[0-9]/s/^/chr/' x2 > dlchrom
 # selecting only those present in counts
 cut -f2 -d"   " counts-230420.txt | tail -n +3 | cut -f1 -d";" | sort -u > counts.chrom
 grep -Fwf counts.chrom dlchrom > counts.dlchrom
+
+# File import to DeseqDataSet described in counts-boxplots.r
