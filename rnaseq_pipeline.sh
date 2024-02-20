@@ -330,6 +330,9 @@ https://github.com/PCRE2Project/pcre2/releases/tag/pcre2-10.43
 make
 make check
 make install
+# In R, check capabilities
+capabilities()
+# X11 and tcl/tk should be TRUE
 
 # Fixing access to R libraries
 # https://stackoverflow.com/a/49366252/1040763
