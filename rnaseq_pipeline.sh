@@ -325,7 +325,11 @@ sudo aptitude install libreadline-dev
 # additional packages
 # PCRE2 downloaded from
 https://github.com/PCRE2Project/pcre2/releases/tag/pcre2-10.43
-# and compiled as descibed in INSTALL
+# and compiled with settings needed for tcltk support (a must for Mfuzz)
+./configure --enable-R-shlib=yes --with-x --with-tcltk --with-tcl-config=/usr/lib/tcl8.6/tclConfig.sh --with-tk-config=/usr/lib/tk8.6/tkConfig.sh
+make
+make check
+make install
 
 # Fixing access to R libraries
 # https://stackoverflow.com/a/49366252/1040763
