@@ -298,16 +298,34 @@ __no_feature    1445948                   # ok 72 %
 __ambiguous     35403 # ok 1,8 %
 
 # Analiza ekspresji
-# Instalacja nowego R
-# https://cran.r-project.org/bin/linux/ubuntu/
-# Instalacja wymaganych pakietów Ubuntu
-# sudo apt-get install libcurl4-openssl-dev
-# sudo apt install libxml2-dev
+# R insatllation from source
 
-# >>>>>>>> New version here
-# https://cran.r-project.org/src/base/R-4/
-# it is proper way of installation in Trisquel, now it is R-4.3.2
-# it seems taht r-base-dev is automatically installed, it is required for package installation
+# Installation of dependencies
+sudo apt-get install libcurl4-openssl-dev
+sudo apt install libxml2-dev
+sudo apt install libbz2-dev
+sudo apt install default-jre
+# and setting JAVA_HOME
+# at the time of writing it was
+JAVA_HOME="/usr/lib/jvm/java-11-openjdk-amd64"
+# in /etc/environment
+
+sudo apt install default-jdk
+# according to
+https://stackoverflow.com/a/25691602
+# not necesarily  all required but take not much space
+sudo apt-get install build-essential
+sudo apt-get install fort77
+sudo apt-get install xorg-dev
+sudo apt-get install liblzma-dev  libblas-dev gfortran
+sudo apt-get install gcc-multilib
+sudo apt-get install gobjc++
+sudo apt-get install aptitude
+sudo aptitude install libreadline-dev
+# additional packages
+# PCRE2 downloaded from
+https://github.com/PCRE2Project/pcre2/releases/tag/pcre2-10.43
+# and compiled as descibed in INSTALL
 
 # Fixing access to R libraries
 # https://stackoverflow.com/a/49366252/1040763
