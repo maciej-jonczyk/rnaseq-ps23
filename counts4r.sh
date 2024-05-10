@@ -2,10 +2,13 @@
 # before each session
 export LC_ALL=C
 # file after featureCounts - SEPARATE FOR EXPERIMENT
+# removal of line with command
 tail -n +2 counts-230420.txt > x
+# which columns remove
 head -n1 x | tr '\t' '\n' | cat -n
 # TAB is a field separator
 cut --complement -f2-6 -d"     " x > x2
+# result - table which only requires change of labels (column names)
 
 
 # file with sample identification - SEPARATE FOR EXPERIMENT
