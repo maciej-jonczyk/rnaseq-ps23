@@ -1,8 +1,8 @@
 
-# sprawdzić workflow
+# Workflow worth checking
 https://huoww07.github.io/Bioinformatics-for-RNA-Seq/
 
-# dane z https://bmcplantbiol.biomedcentral.com/articles/10.1186/s12870-022-03751-1
+# data from https://bmcplantbiol.biomedcentral.com/articles/10.1186/s12870-022-03751-1
 
 # For convenience in some steps loops were used.
 
@@ -15,22 +15,24 @@ https://huoww07.github.io/Bioinformatics-for-RNA-Seq/
 
 # Adapter and quality trimming. Trimmomatic version 0.39
 # Download
-git clone https://github.com/usadellab/Trimmomatic.git
+https://github.com/usadellab/Trimmomatic/releases/tag/v0.39
 # Installation
 sudo apt-get install ant
 cd Trimmomatic/
 # Edit a build.xml file to avoid error. Accoding to https://github.com/usadellab/Trimmomatic/issues/24
-# for ubuntu 22.04
+# for ubuntu 22.04 and 24.04
 In order to fix this, edit file build.xml and replace 1.5 with 1.7 on line 34
 featherpad build.xml
 save and exit the file
 # Compilation
 ant
-# The program is available in 
-/home/mj/bin/Trimmomatic/dist/jar/trimmomatic-0.40-rc1.jar
+# The program is available in
+/home/mj/bin/Trimmomatic-0.39/dist/jar/trimmomatic-0.39.jar
 
 # Program podumowujący
 pip install multiqc
+# if 'error: externally-managed-environment' occurs add
+--break-system-packages
 # do działania muszą być pliki zip po np. fastqc, same html nie są obsługiwane!
 # Aktualizacja
 pip install --upgrade multiqc
@@ -150,8 +152,10 @@ for i in {7454620..7454643}; do samtools view -@24 -bq10 map-star/ERR${i}Aligned
 # Instalacja pip
 sudo apt-get install python3-pip
 # instalacja deeptools
-python3 -m pip install deeptools
+pip install deeptools --break-system-packages
+
 # w razie jakby marudził, że za stare dpenedencies. Tu dla "packaging"
+# ewentualnie usunąć 'python3 -m'
 python3 -m pip install --upgrade packaging
 
 # Instrukcja pakietu: https://deeptools.readthedocs.io/en/develop/content/list_of_tools.html
@@ -266,10 +270,10 @@ python3 -m pip install HTSeq
 
 # Zdaje się, że lepszy > 80% zliczonych (w próbnym projekcie E-MTAB-11224 mRNA było wzbogacane metodą oligo-dT. U nas też tak będzie)
 # pozwala na multithreading, co na dell przy 8 procesorach dało 30 - 40 min / plik
-for i in {21..43}; do ~/bin/subread-2.0.4-Linux-x86_64/bin/featureCounts -C  -B  -Q 10  -F GTF  -s 2  -T 8  --ignoreDup  -p  --countReadPairs  -t exon  -g gene_id  -a ../NAMv5/Zea_mays.Zm-B73-REFERENCE-NAM-5.0.55.chr.gtf -o fc-counts-str2/ERR74546${i}counts.txt  bam10mapq-srt/ERR74546${i}q10srt.bam  --verbose; done
+for i in {21..43}; do ~/bin/subread-2.0.6-Linux-x86_64/bin/featureCounts -C  -B  -Q 10  -F GTF  -s 2  -T 8  --ignoreDup  -p  --countReadPairs  -t exon  -g gene_id  -a ../NAMv5/Zea_mays.Zm-B73-REFERENCE-NAM-5.0.55.chr.gtf -o fc-counts-str2/ERR74546${i}counts.txt  bam10mapq-srt/ERR74546${i}q10srt.bam  --verbose; done
 
 # Lepsze, wszystkie pliki na raz - od razu count matrix
-~/bin/subread-2.0.4-Linux-x86_64/bin/featureCounts -C  -B  -Q 10  -F GTF  -s 2  -T 8  --ignoreDup  -p  --countReadPairs  -t exon  -g gene_id  -a ../NAMv5/Zea_mays.Zm-B73-REFERENCE-NAM-5.0.55.chr.gtf -o fc-counts-str2/counts-all.txt  bam10mapq-srt/*.bam  --verbose
+~/bin/subread-2.0.6-Linux-x86_64/bin/featureCounts -C  -B  -Q 10  -F GTF  -s 2  -T 8  --ignoreDup  -p  --countReadPairs  -t exon  -g gene_id  -a ../NAMv5/Zea_mays.Zm-B73-REFERENCE-NAM-5.0.55.chr.gtf -o fc-counts-str2/counts-all.txt  bam10mapq-srt/*.bam  --verbose
 # ok 12 min / 24 pliki po 20 mln read-pairs
 
 ***************************** Wyjaśnienie opcji ********************************************************
