@@ -302,19 +302,23 @@ __no_feature    1445948                   # ok 72 %
 __ambiguous     35403 # ok 1,8 %
 
 # Analiza ekspresji
-# R insatllation from source
+# R installation from source
 
 # Installation of dependencies
+sudo apt install tk
+sudo apt install tk-dev
+sudo apt install tcl
+sudo apt install tcl-dev
 sudo apt-get install libcurl4-openssl-dev
 sudo apt install libxml2-dev
 sudo apt install libbz2-dev
-sudo apt install default-jre
+sudo apt install openjdk-17-jre
 # and setting JAVA_HOME
 # at the time of writing it was
-JAVA_HOME="/usr/lib/jvm/java-11-openjdk-amd64"
+JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
 # in /etc/environment
 
-sudo apt install default-jdk
+sudo apt install openjdk-17-jdk
 # according to
 https://stackoverflow.com/a/25691602
 # not necesarily  all required but take not much space
@@ -331,6 +335,8 @@ sudo aptitude install libreadline-dev
 https://github.com/PCRE2Project/pcre2/releases/tag/pcre2-10.43
 # and compiled with settings needed for tcltk support (a must for Mfuzz)
 ./configure --enable-R-shlib=yes --with-x --with-tcltk --with-tcl-config=/usr/lib/tcl8.6/tclConfig.sh --with-tk-config=/usr/lib/tk8.6/tkConfig.sh
+# alternatively (used in lubuntu 24.04)
+./configure --enable-R-shlib=yes --prefix=`pwd` --with-x --with-tcltk
 make
 make check
 make install
