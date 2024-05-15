@@ -97,6 +97,18 @@ pheatmap(samplePoisDistMatrix,
 plotPCA(vsd, intgroup = c("tk", "ln", "time"))
 plotPCA(vsd, intgroup = c("ln", "time"))
 
+# Multiple plots - useful for comparisons of coloring by factors
+# Using multiplot.r function (available in this repo, source: http://www.cookbook-r.com/Graphs/Multiple_graphs_on_one_page_(ggplot2)/)
+# File for plots
+png("sam-pc34.png", width=90, height=30, units="cm", res=100)
+# Saving individual plotPCA plots
+x<-plotPCA(vsd.sam, intgroup = c("ln","powt"), ntop=30000, pcs=3:4)
+x2<-plotPCA(vsd.sam, intgroup = c("day"), ntop=30000, pcs=3:4)
+x3<-plotPCA(vsd.sam, intgroup = c("time"), ntop=30000, pcs=3:4)
+# Plotting function itself
+multiplot(x, x2, x3, cols=3)
+dev.off()
+
 # PCA with ggplot
 pcaData=plotPCA(vsd, intgroup=c("ln", "time"), returnData=T)
 percentVar <- round(100 * attr(pcaData, "percentVar"))
