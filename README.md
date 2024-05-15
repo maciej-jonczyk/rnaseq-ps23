@@ -42,7 +42,9 @@ Here also corrected script *colorbar.R* for legend is used.
 
 *overrepresented-seqs-check.sh* - what are overrepresented sequences in FastQC results?
 
-- [ ] correct data after new sequencing of "U3" sample - we have results
+*multiplot.r* - script for plotting multiple PCA plots (plotPCA command) at the same area
+
+- [x] correct data after new sequencing of "U3" sample - we have results
 - [ ] full analysis of 2nd replication, plus joint PCA/clustering analysis
-- [ ] update sample names in count file to include replication number
+- [x] update sample names in count file to include replication number
 - [x] check, if it is possible to make DE analysis on two replications (DEseq2) - OK
