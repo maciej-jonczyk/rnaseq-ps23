@@ -152,6 +152,9 @@ awk -v FS=',' -v OFS=',' '$1==11' perf.qq | less
 # and similar for remaining ids
 
 # Conclusion - the majority of hits are to rRNA
+# I'm not excluding them, libraries were poly-A enriched so rRNA is not very abundant.
+# Moreover removal of rRNA is not advised here (especially by Devon and ATpoint)
+https://www.biostars.org/p/434543/
 # most of remaining sequences align perfectly with 'NAD(P)H-quinone oxidoreductase' which according to literature is very big family of proteins
 
 # NOTE, this analysis is not exhaustive as it bases on FastQC result which assess overrepresented seqs on subset of data
