@@ -6,13 +6,18 @@ Whenewer possible bash command-line tools are preffered over R.
 
 *alternatywy.r* - just some links to web pages with potentially usefu information.
 
-## Analyses on simulated or test data
-The first trials of read-processing are given in *rnaseq_pipeline.sh*
+## Archival deprecated analyses
+Directory *deprecated*
 
 *prb.masigpro.r* - test of time-course analysis in maSigPro R package.
 
 *see.gen2plot.r* - modification of the see.genes function, used to prevent over-writing of plots in R (used from command-line)
 In the end this package will not be used as it don't allow to compare multiple groups and the contact with developers is poor.
+
+## Analyses on simulated or test data
+Directory *test-simulated-data*
+
+The first trials of read-processing are given in *rnaseq_pipeline.sh*
 
 *deseq-analysis.r* - test of differential gene expression analysis in DESeq2 package in R. Two versions, two replications and three replications
 
