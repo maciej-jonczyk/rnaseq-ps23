@@ -29,15 +29,16 @@ Here also corrected script *colorbar.R* for legend is used.
 - [ ] other explorative analyses
 
 ## Analyses on real data
+Directory *sequence-analysis*
 *rnaseq-ost.sh* - the clean read-processing workflow, based on *rnaseq_pipeline.sh*
 
 *rnaseq72.sh* - the clean read-processing workflow for whole first replication of experiment
 
-*qc-pca-all1powt* - quality control plots from BAM files (PCA and correlation)
-
 *counts4r.sh* - construction of files used for DESeqDataSet in DESeq2 package in R
 
 *bam4labels.sh* - commands used to change header of the counts file to match sample labels
+
+Directory *stats-and-visuals*
 
 *boxplot-r.r* - simple boxplot of raw counts
 
