@@ -316,6 +316,8 @@ sudo apt install libbz2-dev
 sudo apt install openjdk-21-jdk-headless
 sudo apt install openjdk-21-jdk
 # and setting JAVA_HOME in ~/.bashrc
+## as outlined in
+https://www.fosslinux.com/126382/how-to-install-different-versions-of-java-on-ubuntu.htm
 export JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64
 export PATH=$JAVA_HOME/bin:$PATH
 # according to
@@ -324,11 +326,10 @@ https://stackoverflow.com/a/25691602
 sudo apt-get install build-essential
 sudo apt-get install fort77
 sudo apt-get install xorg-dev
-sudo apt-get install liblzma-dev  libblas-dev gfortran
+sudo apt-get install liblzma-dev libblas-dev gfortran
 sudo apt-get install gcc-multilib
 sudo apt-get install gobjc++
-sudo apt-get install aptitude
-sudo aptitude install libreadline-dev
+sudo apt install libreadline-dev
 # additional packages
 # PCRE2 downloaded from
 https://github.com/PCRE2Project/pcre2/releases/tag/pcre2-10.43
@@ -337,7 +338,7 @@ https://github.com/PCRE2Project/pcre2/releases/tag/pcre2-10.43
 # R compiled with settings needed for tcltk support (a must for Mfuzz)
 ./configure --enable-R-shlib=yes --with-x --with-tcltk --with-tcl-config=/usr/lib/tcl8.6/tclConfig.sh --with-tk-config=/usr/lib/tk8.6/tkConfig.sh
 # alternatively (used in lubuntu 24.04), above was run on Dell and both seem to work
-./configure --enable-R-shlib=yes --prefix=`pwd` --with-x --with-tcltk
+# ./configure --enable-R-shlib=yes --prefix=`pwd` --with-x --with-tcltk
 make
 make check
 make install
