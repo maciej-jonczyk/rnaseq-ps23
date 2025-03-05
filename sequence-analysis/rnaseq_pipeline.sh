@@ -21,7 +21,7 @@ sudo apt-get install ant
 cd Trimmomatic/
 # Edit a build.xml file to avoid error. Accoding to https://github.com/usadellab/Trimmomatic/issues/24
 # for ubuntu 22.04 and 24.04
-In order to fix this, edit file build.xml and replace 1.5 with 1.7 on line 34
+In order to fix this, edit file build.xml and replace 1.5 with 1.8 on line 34
 featherpad build.xml
 save and exit the file
 # Compilation
@@ -124,7 +124,7 @@ for i in {7454620..7454643}; do STAR --runThreadN 24 --readFilesIn ../surowe/ERR
 # Trzea zmodyfikować build.xml jak dla Trimmomatic
 # Edit a build.xml file to avoid error. Accoding to https://github.com/usadellab/Trimmomatic/issues/24
 # for ubuntu 22.04
-In order to fix this, edit file build.xml and replace 1.5 with 1.7 on line 9 and 10
+In order to fix this, edit file build.xml and replace 1.5 with 1.8 on line 9 and 10
 featherpad build.xml
 save and exit the file
 # Program available in ~/bin/BamQC-master/bin/bamqc
@@ -312,13 +312,12 @@ sudo apt install tcl-dev
 sudo apt-get install libcurl4-openssl-dev
 sudo apt install libxml2-dev
 sudo apt install libbz2-dev
-sudo apt install openjdk-17-jre
-# and setting JAVA_HOME
-# at the time of writing it was
-JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
-# in /etc/environment
-
-sudo apt install openjdk-17-jdk
+# As of java, in lubuntu 24.04 version 21 module was installed (openjdk 21.0.6 2025-01-21) by default so I run:
+sudo apt install openjdk-21-jdk-headless
+sudo apt install openjdk-21-jdk
+# and setting JAVA_HOME in ~/.bashrc
+export JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64
+export PATH=$JAVA_HOME/bin:$PATH
 # according to
 https://stackoverflow.com/a/25691602
 # not necesarily  all required but take not much space
@@ -333,9 +332,11 @@ sudo aptitude install libreadline-dev
 # additional packages
 # PCRE2 downloaded from
 https://github.com/PCRE2Project/pcre2/releases/tag/pcre2-10.43
-# and compiled with settings needed for tcltk support (a must for Mfuzz)
+# adncompiled according to INSTALL file
+
+# R compiled with settings needed for tcltk support (a must for Mfuzz)
 ./configure --enable-R-shlib=yes --with-x --with-tcltk --with-tcl-config=/usr/lib/tcl8.6/tclConfig.sh --with-tk-config=/usr/lib/tk8.6/tkConfig.sh
-# alternatively (used in lubuntu 24.04)
+# alternatively (used in lubuntu 24.04), above was run on Dell and both seem to work
 ./configure --enable-R-shlib=yes --prefix=`pwd` --with-x --with-tcltk
 make
 make check
