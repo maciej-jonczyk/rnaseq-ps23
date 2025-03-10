@@ -335,13 +335,13 @@ sudo apt install libreadline-dev
 https://github.com/PCRE2Project/pcre2/releases/tag/pcre2-10.43
 # adncompiled according to INSTALL file
 
-# R compiled with settings needed for tcltk support (a must for Mfuzz)
-./configure --enable-R-shlib=yes --with-x --with-tcltk --with-tcl-config=/usr/lib/tcl8.6/tclConfig.sh --with-tk-config=/usr/lib/tk8.6/tkConfig.sh
+# R compiled with settings needed for tcltk support (a must for Mfuzz) and cair support (needed for svg image output)
+./configure --enable-R-shlib --with-cairo --with-libpng --with-libtiff --with-jpeglib --with-x --with-tcltk
 # alternatively (used in lubuntu 24.04), above was run on Dell and both seem to work
 # ./configure --enable-R-shlib=yes --prefix=`pwd` --with-x --with-tcltk
 make
 make check
-make install
+sudo make install
 # In R, check capabilities
 capabilities()
 # X11 and tcl/tk should be TRUE
