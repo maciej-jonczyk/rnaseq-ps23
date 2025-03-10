@@ -336,9 +336,8 @@ https://github.com/PCRE2Project/pcre2/releases/tag/pcre2-10.43
 # adncompiled according to INSTALL file
 
 # R compiled with settings needed for tcltk support (a must for Mfuzz) and cair support (needed for svg image output)
-./configure --enable-R-shlib --with-cairo --with-libpng --with-libtiff --with-jpeglib --with-x --with-tcltk
-# alternatively (used in lubuntu 24.04), above was run on Dell and both seem to work
-# ./configure --enable-R-shlib=yes --prefix=`pwd` --with-x --with-tcltk
+./configure --enable-R-shlib --with-cairo --with-libpng -with-libtiff --with-jpeglib --with-x --with-tcltk --without-ICU
+# --without-ICU wynika z prób kompliacji z obsługą grafiki o wysokiej jakości - tiff, dla R 4.3.3 jest za nowe ICU (74) więc po tych kombinacjach musiałem tak zrobić
 make
 make check
 sudo make install
