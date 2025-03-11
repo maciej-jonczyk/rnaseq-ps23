@@ -338,7 +338,8 @@ https://github.com/PCRE2Project/pcre2/releases/tag/pcre2-10.43
 # R compiled with settings needed for tcltk support (a must for Mfuzz) and cair support (needed for svg image output)
 ./configure --enable-R-shlib --with-cairo --with-libpng -with-libtiff --with-jpeglib --with-x --with-tcltk --without-ICU
 # --without-ICU wynika z prób kompliacji z obsługą grafiki o wysokiej jakości - tiff, dla R 4.3.3 jest za nowe ICU (74) więc po tych kombinacjach musiałem tak zrobić
-make
+# Use all threads
+make -j$(nproc)
 make check
 sudo make install
 # In R, check capabilities
