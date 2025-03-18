@@ -330,13 +330,14 @@ sudo apt-get install liblzma-dev libblas-dev gfortran
 sudo apt-get install gcc-multilib
 sudo apt-get install gobjc++
 sudo apt install libreadline-dev
+sudo apt install libcairo2-dev
 # additional packages
 # PCRE2 downloaded from
 https://github.com/PCRE2Project/pcre2/releases/tag/pcre2-10.43
 # adncompiled according to INSTALL file
 
 # R compiled with settings needed for tcltk support (a must for Mfuzz) and cair support (needed for svg image output)
-./configure --enable-R-shlib --with-cairo --with-libpng -with-libtiff --with-jpeglib --with-x --with-tcltk --without-ICU
+./configure --enable-R-shlib --with-cairo --with-libpng --with-libtiff --with-jpeglib --with-x --with-tcltk --without-ICU
 # --without-ICU wynika z prób kompliacji z obsługą grafiki o wysokiej jakości - tiff, dla R 4.3.3 jest za nowe ICU (74) więc po tych kombinacjach musiałem tak zrobić
 # Use all threads
 make -j$(nproc)
