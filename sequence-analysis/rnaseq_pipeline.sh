@@ -316,10 +316,10 @@ sudo apt install libbz2-dev
 sudo apt install openjdk-21-jdk-headless
 sudo apt install openjdk-21-jdk
 # and setting JAVA_HOME in ~/.bashrc
+echo "export JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64" >> ~/.bashrc
+echo "export PATH=\$JAVA_HOME/bin:\$PATH" >> ~/.bashrc
 ## as outlined in
 https://www.fosslinux.com/126382/how-to-install-different-versions-of-java-on-ubuntu.htm
-export JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64
-export PATH=$JAVA_HOME/bin:$PATH
 # according to
 https://stackoverflow.com/a/25691602
 # not necesarily  all required but take not much space
